@@ -2,8 +2,17 @@
   <div :class="[
     'w-80 p-5',
     'bg-gray-200',
-    'rounded-lg'
+    'rounded-lg',
+    'flex flex-col',
+    'justify-center items-center',
+    'gap-3'
   ]">
+    <slot
+      :minVal="minVal"
+      :maxVal="maxVal"
+      :currentVal="currentVal"
+      :percent="percent"
+    />
     <div :class="[
       'w-full h-2',
       'bg-green-800',
@@ -13,7 +22,8 @@
         :class="[
           'w-1/3 h-full',
           'bg-green-500',
-          'rounded-full'
+          'rounded-full',
+          'transition-all duration-500'
         ]"
         :style="{
           width: percent + '%'
@@ -33,11 +43,11 @@ export default {
     }
   },
   mounted() {
-    this.percent = Number(this.currentVal*100/(this.maxVal-this.minVal))
+    this.percent = this.currentVal <= this.minVal ? 0 : (this.currentVal-this.minVal)*100/(this.maxVal-this.minVal)
   },
   watch: {
     currentVal(newVal, oldVal) {
-      this.percent = Number(newVal*100/(this.maxVal-this.minVal))
+      this.percent = newVal <= this.minVal ? 0 : (newVal-this.minVal)*100/(this.maxVal-this.minVal)
     }
   }
 }
